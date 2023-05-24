@@ -1,0 +1,24 @@
+import { exec } from 'child_process';
+export const config={
+    testURL : "http://ltcservice.laotel.com:5577/Services.asmx?WSDL",
+    realURL : "http://ltcservice.laotel.com:7720/Services.asmx?WSDL",
+    privateKey  :"_PRIVATE_KEY_PROVIDED _BY_LTC",
+    userid :"USERID_PROVIDED_BY_LTC",
+    SMSheaderSMS : "SMSheaderSMS_PROVIDED_BY_LTC",
+    SMSsendKey :"YOU_CUSTOM_KEY"
+}
+
+export const descritp = async (data, privateKey)=> {
+    return new Promise((resolve, reject) => {
+      exec(`java -jar ./smsjar/encrypt.jar ${data} ${privateKey}`, async (error, res) => {
+        if (error !== null) {
+          console.log(error)
+          resolve(null);
+        } else {
+          console.log(res)
+          const key = res.slice(4, -2);
+          resolve(key);
+        }
+      });
+    });
+  };
